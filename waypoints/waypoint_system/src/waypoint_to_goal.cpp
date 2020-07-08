@@ -33,10 +33,10 @@ class Sequencer
                 if(order.sequence[i].location == table.ID[j].name)
                 {
                     //store sequenced waypoints
-                    path.poses[i].pose.position.x = stoi(table.ID[j].pose.x);
-                    path.poses[i].pose.position.y = stoi(table.ID[j].pose.y);
-                    path.poses[i].pose.orientation.z = stoi(table.ID[j].pose.z);
-                    path.poses[i].pose.orientation.w = stoi(table.ID[j].pose.w);
+                    path.poses[i].pose.position.x = stof(table.ID[j].pose.x);
+                    path.poses[i].pose.position.y = stof(table.ID[j].pose.y);
+                    path.poses[i].pose.orientation.z = stof(table.ID[j].pose.z);
+                    path.poses[i].pose.orientation.w = stof(table.ID[j].pose.w);
 
                     path.poses[i].task = order.sequence[i].task;
                 }
