@@ -5,6 +5,7 @@
 
 #include <waypoint_msgs/WaypointPauseTiming.h>
 #include <waypoint_msgs/PathTaskArray.h>
+#include <waypoint_msgs/TaskList.h>
 #include <std_srvs/Empty.h>
 #include <std_srvs/SetBool.h>
 #include <move_base_msgs/MoveBaseAction.h>
@@ -94,6 +95,16 @@ bool loop_handle(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &r
 	return true;
 }
 
+bool task_list_handle(waypoint_msgs::TaskList::Request &req, waypoint_msgs::TaskList::Response &res)
+{
+	res.task.resize(4);
+	res.task[0] = "hello";
+	res.task[1] = "punch";
+	res.task[2] = "bye";
+	res.task[3] = "sleep";
+	return true;
+}
+
 void doneCb(const actionlib::SimpleClientGoalState& state, const move_base_msgs::MoveBaseResult::ConstPtr& result)
 {
 	ROS_INFO("Waypoint %d has been completed.", currentGoal);
@@ -148,9 +159,10 @@ int main (int argc, char **argv)
 	//ac.waitForServer();
 	ros::Subscriber sub_waypoints = nh.subscribe<waypoint_msgs::PathTaskArray>("/waypoints", 1000, boost::bind(callback_data_path, _1, &ac));
 	ros::Subscriber waypoints_complete = nh.subscribe<move_base_msgs::MoveBaseActionResult>("/move_base/result", 1000, boost::bind(callback_goal_reset, _1, &ac));
-	ros::ServiceServer server_pause = nh.advertiseService("/pause_waypoint", pause_handle);
-	ros::ServiceServer server_pause_cancel = nh.advertiseService("/cancel_pause", cancel_pause_handle);
-	ros::ServiceServer server_loop = nh.advertiseService("/loop_waypoint", loop_handle);
+	ros::ServiceServer server_pause = nh.advertiseService("/web_service/pause_waypoint", pause_handle);
+	ros::ServiceServer server_pause_cancel = nh.advertiseService("/web_service/cancel_pause", cancel_pause_handle);
+	ros::ServiceServer server_loop = nh.advertiseService("/web_service/loop_waypoint", loop_handle);
+	ros::ServiceServer server_task_list = nh.advertiseService("/web_service/task_list", task_list_handle);
 
 	ros::spin();
 }

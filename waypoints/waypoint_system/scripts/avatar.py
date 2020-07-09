@@ -13,7 +13,8 @@ from std_srvs.srv import SetBool
 
 class Avatar():
     def __init__(self):
-        self.databaseDirectory = "/home/srtc/catkin_ws/src/waypoint-web-system/waypoints/waypoint_system/database/location.json"
+        # self.databaseDirectory = "/home/srtc/catkin_ws/src/waypoint-web-system/waypoints/waypoint_system/database/location.json"
+        self.databaseDirectory = "/home/nuc/catkin_ws/src/waypoint-web-system/waypoints/waypoint_system/database/location.json"
         self.addWaypointService = rospy.Service("/web_service/add_location", NamePose, self.callback_addWaypoint)
         self.deleteWaypointService = rospy.Service("/web_service/delete_location", Strings, self.callback_deleteWaypoint)
         self.deleteAllWaypointsService = rospy.Service("/web_service/delete_all_location", SetBool, self.callback_deleteAllWaypoints)

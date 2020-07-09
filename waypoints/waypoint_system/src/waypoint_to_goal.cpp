@@ -49,7 +49,7 @@ class Sequencer
     Sequencer(ros::NodeHandle *nh)
     {
         path_publisher = nh->advertise<waypoint_msgs::PathTaskArray>("/waypoints", 10);
-        sequence_server = nh->advertiseService("/waypoint_sequence", &Sequencer::callback_sequence, this);
+        sequence_server = nh->advertiseService("/web_service/waypoint_sequence", &Sequencer::callback_sequence, this);
         list_client = nh->serviceClient<waypoint_msgs::WaypointsList>("/web_service/retrieve_all_location");
     }
 

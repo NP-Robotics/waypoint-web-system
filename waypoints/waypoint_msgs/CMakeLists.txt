@@ -68,6 +68,7 @@ add_service_files(
   Waypoint.srv
   Strings.srv
   NamePose.srv
+  TaskList.srv
 )
 
 ## Generate actions in the 'action' folder
