@@ -3,18 +3,19 @@
 import rospy
 import json
 from json import JSONDecoder
-from waypoint_msgs.srv import NamePose
-from waypoint_msgs.srv import Strings
-from waypoint_msgs.srv import WaypointsList
-from waypoint_msgs.srv import Waypoint
-from waypoint_msgs.msg import Locations,ID
+from web_service_jeremy_v1.srv import NamePose
+from web_service_jeremy_v1.srv import Strings
+from web_service_jeremy_v1.srv import WaypointsList
+from web_service_jeremy_v1.srv import Waypoint
+from web_service_jeremy_v1.msg import Locations,ID
 from std_srvs.srv import SetBool
 
 
 class Avatar():
     def __init__(self):
-        # self.databaseDirectory = "/home/srtc/catkin_ws/src/waypoint-web-system/waypoints/waypoint_system/database/location.json"
-        self.databaseDirectory = "/home/nuc/catkin_ws/src/waypoint-web-system/waypoints/waypoint_system/database/location.json"
+        self.databaseDirectory = "/home/hackerman/catkin_ws/src/jeremy_v1/web-service/Database/tophbeifong.json"
+        self.database = self.loadDatabase()
+
         self.addWaypointService = rospy.Service("/web_service/add_location", NamePose, self.callback_addWaypoint)
         self.deleteWaypointService = rospy.Service("/web_service/delete_location", Strings, self.callback_deleteWaypoint)
         self.deleteAllWaypointsService = rospy.Service("/web_service/delete_all_location", SetBool, self.callback_deleteAllWaypoints)
@@ -25,94 +26,69 @@ class Avatar():
         rospy.spin()
 
     def callback_addWaypoint(self, req):
-
-        try:
-            data = self.loadDatabase()
-        except JSONDecoder:
-            #add location if empty
-            f = open(self.databaseDirectory, "r+")
-            json.dump({req.name : {"x" : req.x, "y" : req.y, "z" : req.z, "w" : req.w, }}, f, indent=4, sort_keys=True)
-            f.close()
-            return True, "Succesfully added " + req.name
-
-        if req.name in data:
+        if req.name in self.database:
             return False, "Duplicate name!!!"
-        
-        data[req.name] =  {"x" : req.x, "y" : req.y, "z" : req.z, "w" : req.w, }
-        self.clearDatabase()
-        self.dumpDatabase(data)
-        return True,"Succesfully added " + req.name  
+        else:
+            self.database[req.name] = {"x" : req.x, "y" : req.y, "z" : req.z, "w" : req.w, }
+            return True, "Succesfully added " + req.name
 
 
     def callback_deleteWaypoint(self, req):
-        try:
-            data = self.loadDatabase()
-        except JSONDecoder:
-            return False, "No waypoints stored"
-
-        if not req.name in data:
+        if not req.name in self.database:
             return False, "Waypoint not found!!"
-        del data[req.name]
-        self.clearDatabase()
-        self.dumpDatabase(data)
-        return True, "Succesfully deleted " + req.name
+        else:
+            self.database.pop(req.name)
+            return True, "Succesfully deleted " + req.name
         
 
     def callback_deleteAllWaypoints(self, req):
-        self.clearDatabase()
+        self.database = {}
         return True, "Succesfully deleted all waywaypoints"
 
     def callback_retrieveWaypoint(self, req):
-        try:
-            data = self.loadDatabase()
-        except JSONDecoder:
-            return False, "No waypoints stored"
-        if not req.name in data:
+        if not req.name in self.database:
             return False, "Name not found!!!", ID()
-        
-        waypoint = ID()
-        waypoint.name = req.name
-        waypoint.pose.x = data[req.name]["x"]
-        waypoint.pose.y = data[req.name]["y"]
-        waypoint.pose.w = data[req.name]["w"]
-        waypoint.pose.z = data[req.name]["z"]
-        return True, "Successfully retrieved " + req.name, waypoint
+        else:
+            waypoint = ID()
+            waypoint.name = req.name
+            waypoint.pose.x = self.database[req.name]["x"]
+            waypoint.pose.y = self.database[req.name]["y"]
+            waypoint.pose.w = self.database[req.name]["w"]
+            waypoint.pose.z = self.database[req.name]["z"]
+            return True, "Successfully retrieved " + req.name, waypoint
+
     def callback_retrieveAllWaypoints(self, req):
-        try:
-            data = self.loadDatabase()
-        except JSONDecoder:
-            return False, []
-
         allWaypoints = []
-
-        for i, waypoint in enumerate(data):
-            location = ID()
+        location = ID()
+        for waypoint in self.database:
             location.name = waypoint
-            location.pose.x = data[waypoint]["x"]
-            location.pose.y = data[waypoint]["y"]
-            location.pose.z = data[waypoint]["z"]
-            location.pose.w = data[waypoint]["w"]
+            location.pose.x = self.database[waypoint]["x"]
+            location.pose.y = self.database[waypoint]["y"]
+            location.pose.z = self.database[waypoint]["z"]
+            location.pose.w = self.database[waypoint]["w"]
             allWaypoints.append(location)
 
         return True, allWaypoints
 
-    def clearDatabase(self):
-        f = open(self.databaseDirectory, "w+")
-        f.write("")
-        f.close()
-
     def loadDatabase(self):
-        f = open(self.databaseDirectory, "r+")
-        data = json.load(f)
-        f.close()
-        return data
+        try:
+            file = open(self.databaseDirectory, 'r+')
+            self.database = json.load(file)
+            file.close()
+            return self.database
+        except ValueError:
+            return {}
 
-    def dumpDatabase(self, data):
-        f = open(self.databaseDirectory, "r+")
-        json.dump(data, f, indent=4, sort_keys=True)
-        f.close()
+    def dumpDatabase(self):
+        file = open(self.databaseDirectory, 'w+')
+        file.close()
+        file = open(self.databaseDirectory, 'r+')
+        json.dump(self.database, file, indent=4, sort_keys=True)
+        file.close()
 
 
 if __name__ == "__main__":
     rospy.init_node("legendOfWebService")
-    Avatar()
+    start = Avatar()
+    if rospy.on_shutdown:
+        start.dumpDatabase()
