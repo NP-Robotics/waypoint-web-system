@@ -1,0 +1,4 @@
+<launch>
+	<param name="path" type="string" value="/home/hackerman/catkin_ws/src/waypoint-web-system/waypoints/waypoint_system/database/locations.json" />
+	<node name="avatar" pkg="web_system" type="avatar.py" />
+</launch>
