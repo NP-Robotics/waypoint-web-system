@@ -13,7 +13,7 @@ from std_srvs.srv import SetBool
 
 class Avatar():
     def __init__(self):
-        self.databaseDirectory = "/home/hackerman/catkin_ws/src/jeremy_v1/web-service/Database/tophbeifong.json"
+        self.databaseDirectory = rospy.get_param("/path")
         self.database = self.loadDatabase()
 
         self.addWaypointService = rospy.Service("/web_service/add_location", NamePose, self.callback_addWaypoint)
