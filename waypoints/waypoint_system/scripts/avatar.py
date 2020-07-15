@@ -18,9 +18,9 @@ class Avatar():
 
         self.addWaypointService = rospy.Service("/web_service/add_location", NamePose, self.callback_addWaypoint)
         self.deleteWaypointService = rospy.Service("/web_service/delete_location", Strings, self.callback_deleteWaypoint)
-        self.deleteAllWaypointsService = rospy.Service("/web_service/delete_all_location", SetBool, self.callback_deleteAllWaypoints)
+        self.deleteAllWaypointsService = rospy.Service("/web_service/delete_all_locations", SetBool, self.callback_deleteAllWaypoints)
         self.retrieveWaypointService = rospy.Service("/web_service/retrieve_location", Waypoint, self.callback_retrieveWaypoint)
-        self.retrieveAllWaypointsService = rospy.Service("/web_service/retrieve_all_location", WaypointsList, self.callback_retrieveAllWaypoints)
+        self.retrieveAllWaypointsService = rospy.Service("/web_service/retrieve_all_locations", WaypointsList, self.callback_retrieveAllWaypoints)
 
 
         rospy.spin()
