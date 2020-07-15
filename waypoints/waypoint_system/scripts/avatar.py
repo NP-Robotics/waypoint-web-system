@@ -3,11 +3,11 @@
 import rospy
 import json
 from json import JSONDecoder
-from web_service_jeremy_v1.srv import NamePose
-from web_service_jeremy_v1.srv import Strings
-from web_service_jeremy_v1.srv import WaypointsList
-from web_service_jeremy_v1.srv import Waypoint
-from web_service_jeremy_v1.msg import Locations,ID
+from web_system.srv import NamePose
+from web_system.srv import Strings
+from web_system.srv import WaypointsList
+from web_system.srv import Waypoint
+from web_system.msg import Locations,ID
 from std_srvs.srv import SetBool
 
 
