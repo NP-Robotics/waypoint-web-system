@@ -3,11 +3,11 @@
 import rospy
 import json
 from json import JSONDecoder
-from web_system.srv import NamePose
-from web_system.srv import Strings
-from web_system.srv import WaypointsList
-from web_system.srv import Waypoint
-from web_system.msg import Locations,ID
+from waypoint_msgs.srv import NamePose
+from waypoint_msgs.srv import Strings
+from waypoint_msgs.srv import WaypointsList
+from waypoint_msgs.srv import Waypoint
+from waypoint_msgs.msg import Locations,ID
 from std_srvs.srv import SetBool
 
 
@@ -18,9 +18,9 @@ class Avatar():
 
         self.addWaypointService = rospy.Service("/web_service/add_location", NamePose, self.callback_addWaypoint)
         self.deleteWaypointService = rospy.Service("/web_service/delete_location", Strings, self.callback_deleteWaypoint)
-        self.deleteAllWaypointsService = rospy.Service("/web_service/delete_all_locations", SetBool, self.callback_deleteAllWaypoints)
+        self.deleteAllWaypointsService = rospy.Service("/web_service/delete_all_location", SetBool, self.callback_deleteAllWaypoints)
         self.retrieveWaypointService = rospy.Service("/web_service/retrieve_location", Waypoint, self.callback_retrieveWaypoint)
-        self.retrieveAllWaypointsService = rospy.Service("/web_service/retrieve_all_locations", WaypointsList, self.callback_retrieveAllWaypoints)
+        self.retrieveAllWaypointsService = rospy.Service("/web_service/retrieve_all_location", WaypointsList, self.callback_retrieveAllWaypoints)
 
 
         rospy.spin()
