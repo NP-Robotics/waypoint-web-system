@@ -6,7 +6,7 @@ Takes in waypoints and tasks from the user and send the path to the mobile base
 ## Published Topics
 |Topic Name|Message Type|Purpose|
 |----------|------------|-------|
-|/waypoints|waypoint_msgs::PathTaskArray|Act as a medium to carry the coordinates of waypoints and the tasks at each waypoint from waypoint_to_goal.cpp to path_to_goal_waypoint.cpp|
+|/waypoints|waypoint_msgs::PathTaskArray|Act as a medium to carry the coordinates of waypoints and the tasks at each waypoint from waypoint_to_goal.cpp to path_to_goal_waypoint.cpp for coordinates to publish to the robot. *Note: There is no need for the user to interfere with this topic, publish the waypoints using /web_service/waypoint_sequence service|
 ## Services
 |Service Name|Input Type and Name|Output Type and Name|Purpose|
 |---|---|---|---|
