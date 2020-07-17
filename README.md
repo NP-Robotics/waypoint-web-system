@@ -14,8 +14,12 @@ Takes in waypoints and tasks from the user and send the path to the mobile base
 |/web_service/delete_all_locations|std_srvs/SetBool.srv data|bool data string success|Remove all waypoints from database.|
 |/web_service/retrieve_location|waypoint_msgs/Waypoint.srv name|bool data string web_system.msg/ID name pose|Retrieve waypoint ffrom database with given name.|
 |/web_service/retrieve_all_locations|waypoint_msgs/WaypointsList.srv data|bool data waypoint_msgs/ID[] ID[]|Retreive all waypoints from database in the from of an array.|
+|/web_service/waypoint_sequence|waypoint_msgs/WaypointSequence.srv||Obtain a sequence of goal coordinates based on given location sequence and publish to move_base to execute the waypoints and the corresponding task.|
+|/web_service/waypoint_sequence|waypoint_msgs/TaskList.srv||Retrieve list of all available tasks.|
 
 # Setup
+## Launching move_base node
+To use the waypoint system, the move_base node from the Navigation Stack must be executed
 ## Configuring launch file
 Open the launch file in person_tracking_ros/launch/person_tracker.launch
 
