@@ -2,6 +2,14 @@
 Allows user to save, delete and retrieve waypoints.
 Takes in waypoints and tasks from the user and send the path to the mobile base
 
+# Installation
+```
+cd catkin_ws/src
+git clone https://github.com/NP-Robotics/waypoint-web-system
+cd ..
+catkin_make
+```
+
 # Published Topics and Provided Services
 ## Published Topics
 |Topic Name|Message Type|Purpose|
