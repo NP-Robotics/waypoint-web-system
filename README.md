@@ -1,6 +1,8 @@
 # waypoint-web-system
 Allows user to save, delete and retrieve waypoints.
-Takes in waypoints and tasks from the user and send the path to the mobile base
+Takes in waypoints and tasks from the user and send the path to the mobile base.
+
+*Note: Intended to be used with https://github.com/NP-Robotics/local-client
 
 # Installation
 ```
