@@ -6,6 +6,7 @@ Takes in waypoints and tasks from the user and send the path to the mobile base
 ## Published Topics
 |Topic Name|Message Type|Purpose|
 |----------|------------|-------|
+|/waypoints|waypoint_msgs::PathTaskArray|Act as a medium to carry the coordinates of waypoints and the tasks at each waypoint from waypoint_to_goal.cpp to path_to_goal_waypoint.cpp|
 ## Services
 |Service Name|Input Type and Name|Output Type and Name|Purpose|
 |---|---|---|---|
