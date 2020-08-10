@@ -1,5 +1,4 @@
 <launch>
-	<param name="path" type="string" value="/home/hackerman/catkin_ws/src/waypoint-web-system/waypoints/waypoint_system/database/locations.json" />
 	<node name="avatar" pkg="web_system" type="avatar.py" />
 	<node name="waypoint_sequencer" pkg="web_system" type="waypoint_to_goal.cpp" />
 	<node name="waypoint_publisher" pkg="web_system" type="path_to_goal_waypoint.cpp" />
