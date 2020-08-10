@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import rospy
 import json
 from json import JSONDecoder
@@ -13,7 +14,9 @@ from std_srvs.srv import SetBool
 
 class Avatar():
     def __init__(self):
-        self.databaseDirectory = rospy.get_param("/path")
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        dir_path = self.walk_up_folder(dir_path)
+        self.databaseDirectory = os.path.join(dir_path, 'waypoint_system/database', 'location.json')
         self.database = self.loadDatabase()
 
         self.addWaypointService = rospy.Service("/web_service/add_location", NamePose, self.callback_addWaypoint)
@@ -21,7 +24,6 @@ class Avatar():
         self.deleteAllWaypointsService = rospy.Service("/web_service/delete_all_location", SetBool, self.callback_deleteAllWaypoints)
         self.retrieveWaypointService = rospy.Service("/web_service/retrieve_location", Waypoint, self.callback_retrieveWaypoint)
         self.retrieveAllWaypointsService = rospy.Service("/web_service/retrieve_all_location", WaypointsList, self.callback_retrieveAllWaypoints)
-
 
         rospy.spin()
 
@@ -85,7 +87,20 @@ class Avatar():
         file = open(self.databaseDirectory, 'r+')
         json.dump(self.database, file, indent=4, sort_keys=True)
         file.close()
+        
+    def walk_up_folder(self, path, dir_goal='waypoints'):
+    ''' Searches and returns the directory of the waypoint.csv file ''' 
 
+        dir_path = os.path.dirname(path)
+        split_path = str.split(dir_path, '/')     
+        counter = 0  
+
+        while (split_path[-1] != dir_goal and counter < 20):
+            dir_path = os.path.dirname(dir_path)
+            split_path = str.split(dir_path, '/')
+            counter += 1
+
+        return dir_path
 
 if __name__ == "__main__":
     rospy.init_node("legendOfWebService")
